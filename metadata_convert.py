@@ -61,15 +61,17 @@ def sinhala_to_roman(text):
 
 # === MAIN PROCESSING FUNCTION ===
 
-def convert_metadata(input_txt='metadata.txt', output_csv='converted_metadata.csv'):
+def convert_metadata(input_txt='v2_metadata.txt', output_csv='tts_converted_metadata.csv'):
     with open(input_txt, 'r', encoding='utf-8') as infile, open(output_csv, 'w', encoding='utf-8', newline='') as outfile:
         writer = csv.writer(outfile, delimiter='|')
         # writer.writerow(['name', 'romanized_text', 'sinhala_text', 'author'])  # header
 
+        
         for line in infile:
-            match = re.match(r'\(\s*(\w+)\s+"(.+?)"\s*\)', line.strip())
+            match = line.strip().split('|', 2)
+            print(match)
             if match:
-                name_raw, sinhala_text = match.groups()
+                name_raw, sinhala_text = match[0], match[1]
                 romanized_text = sinhala_to_roman(sinhala_text)
                 formatted_name = name_raw
                 writer.writerow([formatted_name, romanized_text, sinhala_text, 'mettananda'])
